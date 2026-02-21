@@ -1,6 +1,6 @@
 # MiniLedger – Financial Operations Tracker
 
-![MiniLedger Dashboard](screenshot.png)
+![MiniLedger Dashboard](screenshots/dashboard.png)
 
 ## Author
 
@@ -11,29 +11,74 @@
 
 [CS5610 Web Development – Northeastern University](https://neu.edu)
 
+---
+
 ## Project Objective
 
-MiniLedger is a browser-based financial operations platform for small businesses and independent operators. It enables users to track income and expenses, categorize transactions, and view real-time financial summaries including balance, total revenue, total expenses, and trend charts — all without any page reloads.
+MiniLedger is a browser-based financial operations platform designed for small businesses, freelancers, and independent operators who need a lightweight alternative to complex accounting software.
 
-Built with Node.js + Express backend, MongoDB (native driver), and Vanilla ES6 client-side rendering.
+The application enables users to record and manage income and expense transactions, categorize cash flows, filter records by user or category, and instantly view financial summaries — including net balance, total revenue, total outgoing payments, and a 6-month income vs. expense trend chart — all without any page reloads.
+
+The backend is built on Node.js and Express using ES Modules, with MongoDB (native driver) handling data persistence and aggregation. The frontend is entirely client-side rendered using Vanilla ES6 modules with no frameworks, no templating engines, and no build tools.
+
+---
 
 ## Tech Stack
 
-- **Backend:** Node.js, Express (ESM)
-- **Database:** MongoDB (native driver — no Mongoose)
-- **Frontend:** Vanilla ES6 modules, client-side rendering
-- **Charts:** Chart.js (CDN)
-- **Styling:** Plain CSS modules
+| Layer             | Technology                                  |
+| ----------------- | ------------------------------------------- |
+| Runtime           | Node.js v18+                                |
+| Backend Framework | Express.js (ESM)                            |
+| Database          | MongoDB Atlas (native driver, no Mongoose)  |
+| Frontend          | Vanilla ES6 Modules (client-side rendering) |
+| Charts            | Chart.js (CDN)                              |
+| Styling           | Plain CSS Modules (one file per component)  |
+| Linting           | ESLint v9 (flat config)                     |
+| Formatting        | Prettier                                    |
+
+---
 
 ## Features
 
-- 📊 Dashboard with income vs expense trend charts and net balance
-- 💰 Full CRUD for income transactions with search and category filter
-- 💸 Full CRUD for expense transactions with search and category filter
-- 👤 User management with create, edit, delete
-- 🔍 Real-time search and filter on all tables
-- 📋 Modal forms for all create/edit operations
-- 🌐 Fully deployed on Render
+### Dashboard
+
+- Real-time summary cards: Total Income, Total Expenses, Net Balance, Total Users
+- Bar chart showing Income vs Expenses over the last 6 months
+- Doughnut chart showing expense breakdown by category
+- Recent transactions table combining income and expenses
+
+### Income Module
+
+- Create, read, update, delete income transactions via modal forms
+- Filter by category (Salary, Freelance, Investment, Business, Other)
+- Filter by user
+- Live search across category and description
+- Record count and running total shown at the bottom of the table
+
+### Expense Module
+
+- Create, read, update, delete expense transactions via modal forms
+- Filter by category (Rent, Utilities, Salaries, Supplies, Marketing, Travel, Software, Other)
+- Filter by user
+- Live search across category and description
+- Record count and running total shown at the bottom of the table
+
+### User Management
+
+- Register new users with name, email, and password
+- Edit existing user details
+- Delete users
+- Live search by name or email
+
+### General
+
+- Modal-based forms for all create and edit operations (no page jumps)
+- Confirm dialogs for all delete operations
+- Sidebar navigation with active state highlighting
+- Responsive layout with sticky topbar
+- Clean fintech-style UI (Plus Jakarta Sans, indigo/emerald/rose palette)
+
+---
 
 ## Project Structure
 
@@ -41,48 +86,86 @@ Built with Node.js + Express backend, MongoDB (native driver), and Vanilla ES6 c
 miniledger/
 ├── public/
 │   ├── css/
-│   │   ├── base.css
-│   │   ├── layout.css
-│   │   ├── nav.css
-│   │   ├── forms.css
-│   │   ├── modal.css
-│   │   ├── transactions.css
-│   │   └── dashboard.css
+│   │   ├── base.css          # Global variables, resets, utility classes
+│   │   ├── layout.css        # App shell, sidebar, topbar, page layout
+│   │   ├── nav.css           # Sidebar and topbar styles
+│   │   ├── forms.css         # Form inputs, labels, buttons
+│   │   ├── modal.css         # Modal overlay and dialog styles
+│   │   ├── transactions.css  # Tables, filters, search toolbar
+│   │   └── dashboard.css     # Stat cards, chart cards, dashboard grid
 │   ├── js/
-│   │   ├── app.js
+│   │   ├── app.js            # Entry point — initializes nav and router
 │   │   └── modules/
-│   │       ├── api.js
-│   │       ├── router.js
-│   │       ├── nav.js
-│   │       ├── modal.js
-│   │       ├── homePage.js
-│   │       ├── usersPage.js
-│   │       ├── incomePage.js
-│   │       └── expensesPage.js
-│   └── index.html
+│   │       ├── api.js        # All fetch() calls to the backend API
+│   │       ├── router.js     # Hash-based client-side router
+│   │       ├── nav.js        # Renders sidebar and topbar
+│   │       ├── modal.js      # Reusable modal open/close logic
+│   │       ├── homePage.js   # Dashboard page with charts and summary
+│   │       ├── usersPage.js  # User management page
+│   │       ├── incomePage.js # Income transactions page
+│   │       └── expensesPage.js # Expense transactions page
+│   └── index.html            # Single HTML shell — all content rendered by JS
 ├── src/
 │   ├── db/
-│   │   └── connection.js
+│   │   └── connection.js     # MongoDB connection module (connectDB, getDB)
 │   ├── routes/
-│   │   ├── users.js
-│   │   ├── income.js
-│   │   └── expenses.js
-│   └── seed.js
-├── .env.example
-├── .eslintrc.config.js
-├── .prettierrc
-├── .gitignore
-├── server.js
-├── package.json
+│   │   ├── users.js          # REST endpoints: /api/users
+│   │   ├── income.js         # REST endpoints: /api/income
+│   │   └── expenses.js       # REST endpoints: /api/expenses
+│   └── seed.js               # Seeds 1,100+ sample records into MongoDB
+├── .env.example              # Environment variable template (safe to commit)
+├── eslint.config.js          # ESLint v9 flat config
+├── .prettierrc               # Prettier formatting rules
+├── .gitignore                # Excludes node_modules and .env
+├── server.js                 # Express app entry point
+├── package.json              # Dependencies and npm scripts
+├── LICENSE                   # MIT License
 └── README.md
 ```
+
+---
+
+## API Endpoints
+
+### Users
+
+| Method | Endpoint         | Description     |
+| ------ | ---------------- | --------------- |
+| GET    | `/api/users`     | Get all users   |
+| GET    | `/api/users/:id` | Get single user |
+| POST   | `/api/users`     | Create user     |
+| PUT    | `/api/users/:id` | Update user     |
+| DELETE | `/api/users/:id` | Delete user     |
+
+### Income
+
+| Method | Endpoint          | Description                          |
+| ------ | ----------------- | ------------------------------------ |
+| GET    | `/api/income`     | Get all income (optional `?userId=`) |
+| GET    | `/api/income/:id` | Get single record                    |
+| POST   | `/api/income`     | Create income record                 |
+| PUT    | `/api/income/:id` | Update income record                 |
+| DELETE | `/api/income/:id` | Delete income record                 |
+
+### Expenses
+
+| Method | Endpoint            | Description                            |
+| ------ | ------------------- | -------------------------------------- |
+| GET    | `/api/expenses`     | Get all expenses (optional `?userId=`) |
+| GET    | `/api/expenses/:id` | Get single record                      |
+| POST   | `/api/expenses`     | Create expense record                  |
+| PUT    | `/api/expenses/:id` | Update expense record                  |
+| DELETE | `/api/expenses/:id` | Delete expense record                  |
+
+---
 
 ## Instructions to Build
 
 ### Prerequisites
 
 - Node.js v18+
-- MongoDB Atlas account (free tier works)
+- npm v9+
+- MongoDB Atlas account (free tier works fine)
 
 ### Setup
 
@@ -105,20 +188,26 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` and add your MongoDB connection string:
+Open `.env` and fill in your MongoDB Atlas connection string:
 
 ```
 PORT=3000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/miniledger
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/miniledger?retryWrites=true&w=majority
 ```
 
-4. **Seed the database (optional — adds 1,100+ sample records)**
+4. **Seed the database** _(optional — inserts 1,100+ sample records for testing)_
 
 ```bash
 node src/seed.js
 ```
 
-5. **Start the server**
+5. **Start the development server**
+
+```bash
+npm run dev
+```
+
+Or for production:
 
 ```bash
 npm start
@@ -130,17 +219,34 @@ npm start
 http://localhost:3000
 ```
 
+### Linting and Formatting
+
+```bash
+npm run lint       # Check for ESLint errors
+npm run format     # Auto-format all files with Prettier
+```
+
+---
+
 ## Deployment
 
-Live at: **[https://miniledger.onrender.com](https://miniledger.onrender.com)**
+Live at: **[https://miniledger-financial-operations-tracker.onrender.com](https://miniledger-financial-operations-tracker.onrender.com)**
+
+Deployed on [Render](https://render.com) as a Node.js web service. Environment variables (`MONGO_URI`, `PORT`) are configured in the Render dashboard and never committed to the repository.
+
+---
 
 ## Demo Video
 
-[Watch on YouTube/Loom](https://your-video-link-here)
+https://youtu.be/UFSLUXuaihw
+
+---
 
 ## AI Disclosure
 
-GitHub Copilot and Claude (Anthropic) were used to assist with boilerplate generation, debugging, and code structure suggestions. All architecture decisions, logic, and implementation were reviewed and written by the team.
+GitHub Copilot and Claude (Anthropic) were used to assist with boilerplate generation, debugging, and code structure suggestions. All architecture decisions, feature design, and final implementation were authored and reviewed by the team.
+
+---
 
 ## License
 
