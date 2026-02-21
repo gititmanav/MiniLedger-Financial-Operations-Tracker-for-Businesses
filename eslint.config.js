@@ -13,6 +13,8 @@ export default [
         document: "readonly",
         window: "readonly",
         alert: "readonly",
+        prompt: "readonly",
+        confirm: "readonly",
         FormData: "readonly",
         URL: "readonly",
         history: "readonly",
@@ -20,6 +22,7 @@ export default [
         HTMLElement: "readonly",
         Event: "readonly",
         customElements: "readonly",
+        Chart: "readonly",
       },
     },
     rules: {
