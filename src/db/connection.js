@@ -5,11 +5,17 @@ dotenv.config();
 
 let db;
 
+// added try catch error handling with throw - Alexander
 export async function connectDB() {
-  const client = new MongoClient(process.env.MONGO_URI);
-  await client.connect();
-  db = client.db("miniledger");
-  console.log("Connected to MongoDB");
+  try {
+    const client = new MongoClient(process.env.MONGO_URI);
+    await client.connect();
+    db = client.db("miniledger");
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err.message);
+    throw err;
+  }
 }
 
 export function getDB() {
